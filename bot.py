@@ -103,6 +103,7 @@ async def help(ctx):
     embed.add_field(name='!롤전적', value='롤전적을 보여줍니다.', inline=False)
     embed.add_field(name='!노래순위', value='멜론차트를 모여줍니다.', inline=False)
     embed.add_field(name='!실검', value='네이버 실검을보여줍니다 \n 연관성에 따라 가르게 다를수있습니다', inline=False)
+    embed.add_field(name='!인벤', value='인벤의 주요뉴스를 보여줍니다.', inline=False)
     embed.add_field(name='!청소', value='메시지를 청소합니다. (관리자)', inline=False)
     embed.add_field(name='!킥', value='맨션한 사람을 추방시킵니다. (관리자)', inline=False)
     embed.add_field(name='!밴', value='맨션한 사람을 밴시킵니다. (관리자)', inline=False)
@@ -115,6 +116,27 @@ async def help(ctx):
     embed = discord.Embed(title='도움말이 DM 으로 전송되었습니다.', colour=colour)
     await ctx.send(embed=embed)
 
+
+@client.command(name="인벤", pass_context=True)
+async def inven(ctx):
+    embed = discord.Embed(
+        title="인벤 주요뉴스",
+        colour=colour
+    )
+    targetSite = 'http://www.inven.co.kr/webzine/news/?hotnews=1'
+
+    header = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
+    melonrqRetry = rq.get(targetSite, headers=header)
+    melonht = melonrqRetry.text
+    melonsp = bs(melonht, 'html.parser')
+    artists = melonsp.findAll('span', {'class': 'title'})
+    titles = melonsp.findAll('span', {'class': 'summary'})
+    for i in range(len(titles)):
+        artist = artists[i].text.strip()
+        title = titles[i].text.strip()
+        embed.add_field(name="{0:3d}".format(i+1), value='제목:{0} - 내용:{1}'.format(artist,title), inline=False)
+        embed.timestamp = datetime.datetime.utcnow()
+    await ctx.send(embed=embed)
 
 @client.command(name="노래순위", pass_context=True)
 async def music(ctx):
