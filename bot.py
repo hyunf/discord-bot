@@ -97,7 +97,6 @@ async def help(ctx):
     embed.add_field(name='!코로나', value='한국의 코로나 바이러스 현황을 알려줍니다.', inline=False)
     embed.add_field(name='!영화순위', value='영화를 1~20순위로 나눈 영화순위를 보여줍니다.', inline=False)
     embed.add_field(name='!검색', value='네이버에서 블로그를 목록을 검색합니다.', inline=False)
-    embed.add_field(name='!메일', value='다른사람에게 메일(dm)을 보내보세요', inline=False)
     embed.add_field(name='!한영번역', value='한국어를 영어로 번역합니다.', inline=False)
     embed.add_field(name='!영한번역', value='영어를 한국어로 번역합니다.', inline=False)
     embed.add_field(name='!롤전적', value='롤전적을 보여줍니다.', inline=False)
@@ -582,17 +581,6 @@ async def _search_blog(ctx, *, search_query):
         embed.add_field(name=title[temp], value=link[temp], inline=False)
         temp+=1
     embed.set_footer(text="검색 완료!")
-    embed.timestamp = datetime.datetime.utcnow()
-    await ctx.send(embed=embed)
-
-@client.command(name="메일")
-async def mail(ctx, member : discord.Member, *, contents):
-    embed = discord.Embed(title="{}님에게 메일이 왔습니다.".format(ctx.author.name), colour=colour)
-    embed.add_field(name="내용", value=contents, inline=True)
-    embed.timestamp = datetime.datetime.utcnow()
-    await member.send(embed=embed)
-    embed = discord.Embed(title="{}님에게 메일(dm)을 보냈습니다.".format(member), colour=colour)
-    embed.add_field(name="내용", value=contents, inline=True)
     embed.timestamp = datetime.datetime.utcnow()
     await ctx.send(embed=embed)
 
