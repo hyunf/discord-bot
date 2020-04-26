@@ -66,6 +66,13 @@ def deleteTags(htmls):
         htmls[a] = re.sub('<.+?>','',str(htmls[a]),0).strip()
     return htmls
 
+async def bt(games):
+    await client.wait_until_ready()
+
+    while not client.is_closed():
+        for g in games:
+            await client.change_presence(status = discord.Status.online, activity = discord.Game(g))
+            await asyncio.sleep(10)
 
 
 
@@ -75,10 +82,10 @@ async def on_ready():
     print("다음으로 로그인합니다")
     print(client.user.name)
     print(client.user.id)
+    print('Discord.py 버전 : ' + discord.__version__)
     print("bot starting..")#봇 시작이라고 뜨게하기
     print("==========")
-    game = discord.Game("!헬프")#게임에서 !도움 하는중... 이라고 표시
-    await client.change_presence(status=discord.Status.online, activity=game)
+    await bt(['!헬프', '많이 이용해주세요'])
 
 
 
@@ -101,7 +108,7 @@ async def help(ctx):
     embed.add_field(name='!영한번역', value='영어를 한국어로 번역합니다.', inline=False)
     embed.add_field(name='!롤전적', value='롤전적을 보여줍니다.', inline=False)
     embed.add_field(name='!노래순위', value='멜론차트를 모여줍니다.', inline=False)
-    embed.add_field(name='!실검', value='네이버 실검을보여줍니다 \n 연관성에 따라 가르게 다를수있습니다', inline=False)
+    embed.add_field(name='!실검', value='네이버 실검을보여줍니다 \n 연관성에 따라  다르게 수있습니다', inline=False)
     embed.add_field(name='!인벤', value='인벤의 주요뉴스를 보여줍니다.', inline=False)
     embed.add_field(name='!청소', value='메시지를 청소합니다. (관리자)', inline=False)
     embed.add_field(name='!킥', value='맨션한 사람을 추방시킵니다. (관리자)', inline=False)
