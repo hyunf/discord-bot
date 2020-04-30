@@ -11,6 +11,8 @@ import json
 import requests
 import requests as rq
 import youtube_dl
+from captcha.image import ImageCaptcha
+import random
 from discord.ext import commands
 from urllib.request import HTTPError
 from discord.utils import get
