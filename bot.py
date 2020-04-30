@@ -108,7 +108,8 @@ async def help(ctx):
     embed.add_field(name='!영한번역', value='영어를 한국어로 번역합니다.', inline=False)
     embed.add_field(name='!롤전적', value='롤전적을 보여줍니다.', inline=False)
     embed.add_field(name='!노래순위', value='멜론차트를 모여줍니다.', inline=False)
-    embed.add_field(name='!실검', value='네이버 실검을보여줍니다 \n 연관성에 따라  다르게 수있습니다', inline=False)
+    embed.add_field(name='!실검', value='네이버 실검을보여줍니다 \n 연관성에 따라  다르게 나올수있습니다', inline=False)
+    embed.add_field(name='!인증', value='사람임을 인증합니다. 재미용', inline=False)
     embed.add_field(name='!인벤', value='인벤의 주요뉴스를 보여줍니다.', inline=False)
     embed.add_field(name='!청소', value='메시지를 청소합니다. (관리자)', inline=False)
     embed.add_field(name='!킥', value='맨션한 사람을 추방시킵니다. (관리자)', inline=False)
@@ -121,6 +122,33 @@ async def help(ctx):
     await ctx.author.send(embed=embed)
     embed = discord.Embed(title='도움말이 DM 으로 전송되었습니다.', colour=colour)
     await ctx.send(embed=embed)
+    
+
+@client.command(name="인증", pass_context=True)
+async def certification(ctx):
+    Image_captcha = ImageCaptcha()
+    a = ""
+    for i in range(6):
+        a += str(random.randint(0, 9))
+
+    name = str(ctx.author.id) + ".png"
+    Image_captcha.write(a, name)
+
+    await ctx.send(file=discord.File(name))
+
+    def check(msg):
+        return msg.author == ctx.author and msg.channel == ctx.channel
+
+    try:
+        msg = await client.wait_for("message", timeout=10, check=check)
+    except:
+        await ctx.send("시간초과입니다.")
+        return
+
+    if msg.content == a:
+        await ctx.send("정답입니다.")
+    else:
+        await ctx.send("오답입니다.")
 
 
 @client.command(name="인벤", pass_context=True)
