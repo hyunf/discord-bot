@@ -26,10 +26,10 @@ from bs4 import BeautifulSoup as bs
 
 #Naver Open API application ID
 access_id = os.environ["ID"]
-client_id = "access_id"
+client_id = access_id
 #Naver Open API application token
 access_secret = os.environ["SECRET"]
-client_secret = "access_secret"
+client_secret = access_secret
 colour = discord.Colour.blue()
 
 
