@@ -142,7 +142,7 @@ async def certification(ctx):
         return msg.author == ctx.author and msg.channel == ctx.channel
 
     try:
-        msg = await client.wait_for("message", timeout=10, check=check)
+        msg = await client.wait_for("message", timeout=60, check=check)
     except:
         await ctx.send("시간초과입니다.")
         return
