@@ -737,20 +737,6 @@ async def _unmute_error(ctx, error):
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
 
-@client.command(name="들어와", pass_context=True)
-async def _join(ctx):
-    if ctx.author.voice and ctx.author.voice.channel: # 채널에 들어가 있는지 파악
-        channel = ctx.author.voice.channel # 채널 구하기
-        await channel.connect() # 채널 연결
-        await ctx.send("들어갔습니다.")
-    else: # 유저가 채널에 없으면
-        await ctx.send("채널에 연결되지 않았습니다.") # 출력
-
-@client.command(name="나가")
-async def _leave(ctx): # ctx를 안 써도 ctx가 필요하다는 사실을 잊지 마세요.
-    await client.voice_clients[0].disconnect() # 목록의 첫 번째 채널에서 나가기
-    await ctx.send("나갔습니다.")
-
 
 
 
