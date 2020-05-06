@@ -119,6 +119,7 @@ async def help(ctx):
     embed.add_field(name='!언밴', value='이름#아이디를 하시면 언밴 시킵니다. (관리자)', inline=False)
     embed.add_field(name='!뮤트', value='유저를 뮤트시킵니다. Muted라는 역할이 있서야 작동합니다. \n Muted역할은 뮤트의 기능을 추가해주세요 (관리자)', inline=False)
     embed.add_field(name='!언뮤트', value='유저를 언뮤트 시킵니다. (관리자)', inline=False)
+    embed.add_field(name='봇 개발자 : 한동준#7109', value='초대링크 : https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982', inline=False)
     embed.set_footer(text="저작권은 한동준에게 있음")
     embed.timestamp = datetime.datetime.utcnow()
     await ctx.author.send(embed=embed)
