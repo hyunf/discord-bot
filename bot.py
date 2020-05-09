@@ -87,13 +87,13 @@ async def on_ready():
     print('Discord.py 버전 : ' + discord.__version__)
     print("bot starting..")#봇 시작이라고 뜨게하기
     print("==========")
-    await bt(['!헬프', '많이 이용해주세요', '문의는 한동준#7109'])
+    await bt(['!도움', '많이 이용해주세요', '문의는 한동준#7109'])
 
 
 
 
 
-@client.command(name="헬프", pass_context=True)
+@client.command(name="도움", pass_context=True)
 async def help(ctx):
     embed = discord.Embed(title='명령어 모음집', colour=colour)
     embed.set_thumbnail(url="http://file3.instiz.net/data/file3/2018/03/14/6/5/0/650677eed1348016f364df5e563fd378.jpg")
