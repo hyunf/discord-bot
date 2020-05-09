@@ -631,7 +631,7 @@ async def _search_blog(ctx, *, search_query):
 async def _clear(ctx, number):
     number = int(number) # Converting the amount of messages to delete to an integer
     if number >= 100 or number <= 0:
-        embed = discord.Embed(title="1개부터 100개가지만 해주세요.", colour=colour)
+        embed = discord.Embed(title="1개부터 99개가지만 해주세요.", colour=colour)
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)
     else:
