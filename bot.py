@@ -464,8 +464,9 @@ async def displayembed(ctx, *, trsText):
 
 @client.command(name="핑", pass_context=True)
 async def ping(ctx):
-    embed = discord.Embed(title="핑(ms)", colour=discord.Colour.blue())
-    embed.add_field(name="퐁", value="{0}ms".format(client.latency * 1000), inline=False)
+    latency = round(client.latency * 1000)
+    embed = discord.Embed(title="핑(ms)", colour=colour)
+    embed.add_field(name="퐁", value="{0}ms".format(latency), inline=False)
     await ctx.send(embed=embed)
 
 @client.command(name="정보", pass_context=True)
