@@ -6,4 +6,4 @@ youtube_dl
 requests
 captcha
 pathlib
-functools
+logging
