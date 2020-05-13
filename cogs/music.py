@@ -378,7 +378,7 @@ class 음악(commands.Cog):
             raise MusicError('볼륨 레벨은 0에서 100 사이 여야합니다.')
         ctx.music_state.volume = volume / 100
 
-    @commands.command(name="기록 삭제")
+    @commands.command(name="기록삭제")
     async def clear(self, ctx):
         """재생 목록을 지 웁니다."""
         ctx.music_state.playlist.clear()
