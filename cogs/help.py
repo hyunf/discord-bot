@@ -41,7 +41,7 @@ class 도움말(commands.Cog):
                             if c.name == cog[0]:
                                 embed = discord.Embed(color=colour)
                                 embed.add_field(name=f'{c.name} - {c.help}', value=f'올바른 구문:\n{c.qualified_name} {c.signature}')
-                        found = True
+                                found = True
                     if not found:
                         embed = discord.Embed(title='에러', description='없는 카테고리입니다.', color=colour)
                 else:
