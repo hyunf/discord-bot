@@ -361,7 +361,7 @@ class 음악(commands.Cog):
     @commands.command(name="재생")
     @commands.has_permissions(manage_guild=True)
     async def resume(self, ctx):
-        """멈춘 음악을 다시 재생합니다."""
+        """멈춘음악을 다시 재생합니다."""
         if ctx.voice_client:
             ctx.voice_client.resume()
 
@@ -380,7 +380,7 @@ class 음악(commands.Cog):
 
     @commands.command(name="기록삭제")
     async def clear(self, ctx):
-        """재생 목록을 지 웁니다."""
+        """재생목록을 지웁니다."""
         ctx.music_state.playlist.clear()
 
     @commands.command(name="스킵")
