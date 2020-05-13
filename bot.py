@@ -1,26 +1,17 @@
-import asyncio  # 임포트할 모듈 임포트
 import discord
 import os
 import datetime
-from discord.ext import commands
+from discord.ext import commands, tasks
+from itertools import cycle
 
 
 
 colour = discord.Colour.blue()
-
+status = cycle(['!도움', '문의는 한동준#7109'])
 
 
 client = commands.Bot(command_prefix='!')
 
-
-
-async def bt(games):
-    await client.wait_until_ready()
-
-    while not client.is_closed():
-        for g in games:
-            await client.change_presence(status = discord.Status.online, activity = discord.Game(g))
-            await asyncio.sleep(10)
 
 
 for filename in os.listdir("cogs"):
@@ -37,8 +28,11 @@ async def on_ready():
     print('Discord.py 버전 : ' + discord.__version__)
     print("bot starting..")#봇 시작이라고 뜨게하기
     print("==========")
-    await bt(['!도움', '많이 이용해주세요', '문의는 한동준#7109'])
+    change_status.start()
 
+@tasks.loop(seconds=10)
+async def change_status():
+    await client.change_presence(activity=discord.Game(next(status)))
 
 
 
@@ -67,6 +61,21 @@ async def help(ctx):
     embed.add_field(name='!언밴', value='이름#아이디를 하시면 언밴 시킵니다. (관리자)', inline=False)
     embed.add_field(name='!뮤트', value='유저를 뮤트시킵니다. Muted라는 역할이 있서야 작동합니다. \n Muted역할은 뮤트의 기능을 추가해주세요 (관리자)', inline=False)
     embed.add_field(name='!언뮤트', value='유저를 언뮤트 시킵니다. (관리자)', inline=False)
+    embed.add_field(name='봇 개발자 : 한동준#7109',
+                    value='초대링크 : https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982',
+                    inline=False)
+    embed.set_footer(text="저작권은 한동준에게 있음")
+    embed.timestamp = datetime.datetime.utcnow()
+    await ctx.author.send(embed=embed)
+    embed = discord.Embed(title='명령어 모음집2(음악)', colour=colour)
+    embed.add_field(name="!플레이", value="음악을 재생합니다.", inline=False)
+    embed.add_field(name="!멈추기", value="음악을 멈춥니다", inline=False)
+    embed.add_field(name="!재생", value="멈춘 음악을 다시 재생합니다.", inline=False)
+    embed.add_field(name="!입장", value="봇이 음악 채널에 들어갑니다.", inline=False)
+    embed.add_field(name="!음악정보", value="음악 정보를 보여줍니다.", inline=False)
+    embed.add_field(name='!스킵', value='음악을 스킵합니다.', inline=False)
+    embed.add_field(name='!볼륨', value='볼륨을 설정합니다.', inline=False)
+    embed.add_field(name='!리스트', value='음악 리스트를 보여줍니다.', inline=False)
     embed.add_field(name='봇 개발자 : 한동준#7109',
                     value='초대링크 : https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982',
                     inline=False)
