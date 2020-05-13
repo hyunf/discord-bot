@@ -1,5 +1,4 @@
 import discord
-import asyncio
 import datetime
 import warnings
 import re
@@ -49,6 +48,7 @@ warnings.filterwarnings(action='ignore')
 
 
 class 크롤링(commands.Cog):
+    """웹크롤링을 활용한 기능들을 보여줍니다"""
 
     def __init__(self, client):
         self.client = client
@@ -56,6 +56,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="인벤", pass_context=True)
     async def inven(self, ctx):
+        """인벤의 주요뉴스를 보여줍니다"""
         embed = discord.Embed(
             title="인벤 주요뉴스",
             colour=colour
@@ -77,6 +78,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="노래순위", pass_context=True)
     async def music(self, ctx):
+        """멜론차트를 모여줍니다."""
         embed = discord.Embed(
             title="노래순위",
             description="노래순위입니다.",
@@ -99,6 +101,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="실검", pass_context=True)
     async def sc(self, ctx):
+        """네이버 실검을보여줍니다 연관성에 따라 다르게 나올수있습니다"""
         embed = discord.Embed(
             title="실시간 검색어",
             description="실시간 검색어입니다.",
@@ -118,6 +121,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="롤전적", pass_context=True)
     async def lol(self, ctx, *, playerNickname):
+        """롤전적을 보여줍니다."""
         checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))
         bs = BeautifulSoup(checkURLBool, 'html.parser')
 
@@ -272,6 +276,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="영화순위", pass_context=True)
     async def movie(self, ctx):
+        """영화를 1~20순위로 나눈 영화순위를 보여줍니다."""
         # http://ticket2.movie.daum.net/movie/movieranklist.aspx
         i1 = 0  # 랭킹 string값
         embed = discord.Embed(
@@ -311,6 +316,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="코로나", pass_context=True)
     async def corona19(self, ctx):
+        """한국의 코로나 바이러스 현황을 알려줍니다."""
         # 보건복지부 코로나 바이러스 정보사이트"
         covidSite = "http://ncov.mohw.go.kr/index.jsp"
         covidNotice = "http://ncov.mohw.go.kr"
@@ -362,6 +368,7 @@ class 크롤링(commands.Cog):
 
     @commands.command(name="검색")
     async def _search_blog(self, ctx, *, search_query):
+        """네이버에서 블로그목록을 검색합니다."""
         temp = 0
         url_base = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query="
         url = url_base + urllib.parse.quote(search_query)

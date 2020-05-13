@@ -3,7 +3,6 @@ import functools
 import logging
 import os
 import pathlib
-
 import discord
 import discord.ext.commands as commands
 import youtube_dl
@@ -257,7 +256,7 @@ class GuildMusicState:
 
 
 class 음악(commands.Cog):
-    """🎵🐼"""
+    """음악기능을 보여줍니다."""
 
     def __init__(self, client):
         self.client = client
@@ -290,7 +289,7 @@ class 음악(commands.Cog):
 
     @commands.command(name="음악정보")
     async def status(self, ctx):
-        """Displays the currently played song."""
+        """음악 정보를 보여줍니다."""
         if ctx.music_state.is_playing():
             song = ctx.music_state.current_song
             await ctx.send(f'재생중인 음악:{song}. 볼륨:{song.volume * 100}% 들어가있는 채널{ctx.voice_client.channel.mention}')
@@ -299,15 +298,13 @@ class 음악(commands.Cog):
 
     @commands.command(name="리스트")
     async def playlist(self, ctx):
-        """Shows info about the current playlist."""
+        """음악 리스트를 보여줍니다."""
         await ctx.send(f'{ctx.music_state.playlist}')
 
     @commands.command(name="입장")
     @commands.has_permissions(manage_guild=True)
     async def join(self, ctx, *, channel: discord.VoiceChannel = None):
-        """Summons the bot to a voice channel.
-        If no channel is given, summons it to your current voice channel.
-        """
+        """봇이 음악 채널에 들어갑니다."""
         if channel is None and not ctx.author.voice:
             raise MusicError('음성 채널이 아니거나 참여할 음성 채널을 지정하지 않았습니다.')
 
@@ -320,10 +317,7 @@ class 음악(commands.Cog):
 
     @commands.command(name="플레이")
     async def play(self, ctx, *, request: str):
-        """Plays a song or adds it to the playlist.
-        Automatically searches with youtube_dl
-        List of supported sites : https://ytdl-org.github.io/youtube-dl/supportedsites.html
-        """
+        """음악을 재생합니다."""
         await ctx.message.add_reaction('\N{HOURGLASS}')
 
         # Create the SongInfo
@@ -360,40 +354,38 @@ class 음악(commands.Cog):
     @commands.command(name="멈추기")
     @commands.has_permissions(manage_guild=True)
     async def pause(self, ctx):
-        """Pauses the player."""
+        """음악을 멈춥니다"""
         if ctx.voice_client:
             ctx.voice_client.pause()
 
     @commands.command(name="재생")
     @commands.has_permissions(manage_guild=True)
     async def resume(self, ctx):
-        """Resumes the player."""
+        """멈춘 음악을 다시 재생합니다."""
         if ctx.voice_client:
             ctx.voice_client.resume()
 
     @commands.command(name="종료")
     @commands.has_permissions(manage_guild=True)
     async def stop(self, ctx):
-        """Stops the player, clears the playlist and leaves the voice channel."""
+        """플레이어를 중지하고 재생 목록을 지우고 음성 채널을 떠납니다."""
         await ctx.music_state.stop()
 
     @commands.command(name="볼륨")
     async def volume(self, ctx, volume: int = None):
-        """Sets the volume of the player, scales from 0 to 100."""
+        """볼륨을 설정합니다. 0부터 100까지"""
         if volume < 0 or volume > 100:
             raise MusicError('볼륨 레벨은 0에서 100 사이 여야합니다.')
         ctx.music_state.volume = volume / 100
 
     @commands.command(name="기록 삭제")
     async def clear(self, ctx):
-        """Clears the playlist."""
+        """재생 목록을 지 웁니다."""
         ctx.music_state.playlist.clear()
 
     @commands.command(name="스킵")
     async def skip(self, ctx):
-        """Votes to skip the current song.
-        To configure the minimum number of votes needed, use `minskips`
-        """
+        """음악을 스킵합니다."""
         if not ctx.music_state.is_playing():
             raise MusicError('건너 뛸 항목이 없습니다.')
 
@@ -410,7 +402,7 @@ class 음악(commands.Cog):
             ctx.music_state.skips.clear()
             ctx.voice_client.stop()
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(manage_guild=True)
     async def minskips(self, ctx, number: int):
         """Sets the minimum number of votes to skip a song.

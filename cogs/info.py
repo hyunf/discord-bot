@@ -5,12 +5,14 @@ from discord.ext import commands
 colour = discord.Colour.blue()
 
 class 정보(commands.Cog):
+    """정보확인을 할수있는 기능입니다"""
 
     def __init__(self, client):
         self.client = client
 
     @commands.command(name="핑", pass_context=True)
     async def ping(self, ctx):
+        """핑(딜레이)을 보여줍니다."""
         latency = round(self.client.latency * 1000)
         embed = discord.Embed(title="핑(ms)", colour=colour)
         embed.add_field(name="퐁", value="{0}ms".format(latency), inline=False)
@@ -19,6 +21,7 @@ class 정보(commands.Cog):
 
     @commands.command(name="정보", pass_context=True)
     async def information(self, ctx):
+        """자신의 정보를 보여줍니다."""
         date = datetime.datetime.utcfromtimestamp(((int(ctx.author.id) >> 22) + 1420070400000) / 1000)
         embed = discord.Embed(color=colour)
         embed.add_field(name="이름", value=ctx.author.name, inline=False)
@@ -32,6 +35,7 @@ class 정보(commands.Cog):
 
     @commands.command(name="시간", pass_context=True)
     async def time(self, ctx):
+        """호스팅 지역의 년, 월, 일, 시간, 분, 초를 알려줍니다."""
         embed = discord.Embed(color=colour)
         a = datetime.datetime.today().year
         b = datetime.datetime.today().month
@@ -50,6 +54,7 @@ class 정보(commands.Cog):
 
     @commands.command(name="서버정보", pass_context=True)
     async def serverinformation(self, ctx):
+        """서버정보를 보여줍니다."""
         embed = discord.Embed(colour=colour)
         embed.add_field(name="서버 이름", value=ctx.guild.name, inline=False)
         embed.add_field(name="서버 아이디", value=ctx.guild.id, inline=False)

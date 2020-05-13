@@ -14,12 +14,14 @@ client_secret = "ZBHDeMCaMe"
 colour = discord.Colour.blue()
 
 class 기타(commands.Cog):
+    """기타등등의 기능들을 보여줍니다"""
 
     def __init__(self, client):
         self.client = client
 
     @commands.command(name="인증", pass_context=True)
     async def certification(self, ctx):
+        """사람임을 인증합니다. 재미용"""
         Image_captcha = ImageCaptcha()
         a = ""
         for i in range(6):
@@ -46,6 +48,7 @@ class 기타(commands.Cog):
 
     @commands.command(name="한영번역", pass_context=True)
     async def translation(self, ctx, *, trsText):
+        """한국어를 영어로 번역합니다."""
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         try:
             if len(trsText) == 1:
@@ -89,6 +92,7 @@ class 기타(commands.Cog):
 
     @commands.command(name="영한번역", pass_context=True)
     async def displayembed(self, ctx, *, trsText):
+        """영어를 한국어로 번역합니다."""
         baseurl = "https://openapi.naver.com/v1/papago/n2mt"
         try:
             if len(trsText) == 1:
@@ -129,6 +133,8 @@ class 기타(commands.Cog):
                     await ctx.send("Error Code : " + responsedCode)
         except HTTPError as e:
             await ctx.send("Translate Failed. HTTPError Occured.")
+
+
 
 def setup(client):
     client.add_cog(기타(client))
