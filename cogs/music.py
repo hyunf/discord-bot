@@ -357,6 +357,7 @@ class 음악(commands.Cog):
         """음악을 멈춥니다"""
         if ctx.voice_client:
             ctx.voice_client.pause()
+        await ctx.send('음악을 잠시 멈춥니다')
 
     @commands.command(name="재생")
     @commands.has_permissions(manage_guild=True)
@@ -364,12 +365,14 @@ class 음악(commands.Cog):
         """멈춘음악을 다시 재생합니다."""
         if ctx.voice_client:
             ctx.voice_client.resume()
+        await ctx.send('음악을 다시 재생합니다')
 
     @commands.command(name="종료")
     @commands.has_permissions(manage_guild=True)
     async def stop(self, ctx):
         """플레이어를 중지하고 재생 목록을 지우고 음성 채널을 떠납니다."""
         await ctx.music_state.stop()
+        await ctx.send('음악을 종료하고 채널을 나갑니다')
 
     @commands.command(name="볼륨")
     async def volume(self, ctx, volume: int = None):
@@ -377,11 +380,13 @@ class 음악(commands.Cog):
         if volume < 0 or volume > 100:
             raise MusicError('볼륨 레벨은 0에서 100 사이 여야합니다.')
         ctx.music_state.volume = volume / 100
+        await ctx.send(f'볼륨을 {volume}으로 설정했습니다.')
 
     @commands.command(name="기록삭제")
     async def clear(self, ctx):
         """재생목록을 지웁니다."""
         ctx.music_state.playlist.clear()
+        await ctx.send('재생 목록을 삭제합니다.')
 
     @commands.command(name="스킵")
     async def skip(self, ctx):
