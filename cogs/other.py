@@ -1,8 +1,6 @@
 import discord
-import random
 import datetime
 import json
-from captcha.image import ImageCaptcha
 from discord.ext import commands
 from urllib.parse import quote
 from urllib.request import urlopen, Request, HTTPError
@@ -19,32 +17,6 @@ class 기타(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(name="인증", pass_context=True)
-    async def certification(self, ctx):
-        """사람임을 인증합니다. 재미용"""
-        Image_captcha = ImageCaptcha()
-        a = ""
-        for i in range(6):
-            a += str(random.randint(0, 9))
-
-        name = str(ctx.author.id) + ".png"
-        Image_captcha.write(a, name)
-
-        await ctx.send(file=discord.File(name))
-
-        def check(msg):
-            return msg.author == ctx.author and msg.channel == ctx.channel
-
-        try:
-            msg = await self.client.wait_for("message", timeout=60, check=check)
-        except:
-            await ctx.send("시간초과입니다.")
-            return
-
-        if msg.content == a:
-            await ctx.send("정답입니다.")
-        else:
-            await ctx.send("오답입니다.")
 
     @commands.command(name="한영번역", pass_context=True)
     async def translation(self, ctx, *, trsText):
@@ -133,6 +105,70 @@ class 기타(commands.Cog):
                     await ctx.send("Error Code : " + responsedCode)
         except HTTPError as e:
             await ctx.send("Translate Failed. HTTPError Occured.")
+            
+    @commands.command(name="인증", pass_context=True)
+    async def certification(self, ctx):
+        """사람임을 인증합니다.재미용"""
+        code = "0"
+        url = "https://openapi.naver.com/v1/captcha/nkey?code=" + code
+        request = urllib.request.Request(url)
+        request.add_header("X-Naver-Client-Id", client_id)
+        request.add_header("X-Naver-Client-Secret", client_secret)
+        response = urllib.request.urlopen(request)
+        rescode = response.getcode()
+        if (rescode == 200):
+            response_body = response.read()
+            key = response_body.decode('utf-8')
+            key = json.loads(key)
+            key = key['key']
+            url = "https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=" + key
+            request = urllib.request.Request(url)
+            request.add_header("X-Naver-Client-Id", client_id)
+            request.add_header("X-Naver-Client-Secret", client_secret)
+            response = urllib.request.urlopen(request)
+            rescode = response.getcode()
+            if (rescode == 200):
+                print("캡차 이미지 저장")
+                response_body = response.read()
+                name = str(ctx.author.id) + '.png'
+                with open(name, 'wb') as f:
+                    f.write(response_body)
+                await ctx.send(file=discord.File(str(ctx.author.id) + '.png'))
+
+                def check(msg):
+                    return msg.author == ctx.author and msg.channel == ctx.channel
+
+                try:
+                    msg = await self.client.wait_for("message", timeout=60, check=check)
+                except:
+                    await ctx.send("시간초과입니다.")
+                    return
+
+                code = "1"
+                value = msg.content
+                url = "https://openapi.naver.com/v1/captcha/nkey?code=" + code + "&key=" + key + "&value=" + str(quote(value))
+                request = urllib.request.Request(url)
+                request.add_header("X-Naver-Client-Id", client_id)
+                request.add_header("X-Naver-Client-Secret", client_secret)
+                response = urllib.request.urlopen(request)
+                rescode = response.getcode()
+                if (rescode == 200):
+                    response_body = response.read()
+                    sid = response_body.decode('utf-8')
+                    answer = json.loads(sid)
+                    answer = answer['result']
+                    time = json.loads(sid)
+                    time = time['responseTime']
+                    if str(answer) == 'True':
+                        await ctx.send("정답입니다. 걸린시간:" + str(time) + '초')
+                    if str(answer) == 'False':
+                        await ctx.send("틀리셨습니다. 걸린시간:" + str(time) + '초')
+                else:
+                    print("Error Code:" + rescode)
+            else:
+                print("Error Code:" + rescode)
+        else:
+            print("Error Code:" + rescode)
 
 
 
