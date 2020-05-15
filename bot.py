@@ -1,16 +1,21 @@
 import discord
 import os
 import datetime
+from configparser import ConfigParser
 from discord.ext import commands, tasks
 from itertools import cycle
+
+config = ConfigParser()
+config.read('config.ini')
+prefix = config["setting"]["prefix"]
 
 
 
 colour = discord.Colour.blue()
-status = cycle(['!도움', '문의는 한동준#7109'])
+status = cycle([f'{prefix}도움', '문의는 한동준#7109'])
 
 
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
 
 
