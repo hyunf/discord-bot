@@ -106,7 +106,7 @@ class 기타(commands.Cog):
                     await ctx.send("Error Code : " + responsedCode)
         except HTTPError as e:
             await ctx.send("Translate Failed. HTTPError Occured.")
-            
+
     @commands.command(name="인증", pass_context=True)
     async def certification(self, ctx):
         """사람임을 인증합니다.재미용"""
@@ -170,6 +170,11 @@ class 기타(commands.Cog):
                 print("Error Code:" + rescode)
         else:
             print("Error Code:" + rescode)
+        
+    @commands.command(name="봇초대", pass_context=True)
+    async def invite(self, ctx):
+        """봇초대 주소를 보여줍니다"""
+        await ctx.send("https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982")
 
 
 
