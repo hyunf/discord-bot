@@ -182,7 +182,7 @@ class 기타(commands.Cog):
     async def servernumber(self, ctx):
         """햔재 들어가있는 서버수를 보여줍니다"""
         embed = discord.Embed(color=colour)
-        embed.add_field(name="들어가있는 서버수", value=self.dblpy.guild_count())
+        embed.add_field(name="들어가있는 서버수", value=f"{self.dblpy.guild_count()}개")
         await ctx.send(embed=embed)
 
 
