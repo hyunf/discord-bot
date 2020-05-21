@@ -178,7 +178,7 @@ class 기타(commands.Cog):
         """봇초대 주소를 보여줍니다"""
         await ctx.send("https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982")
 
-    @commands.command(name="서버수")
+    @commands.command(name="온라인")
     async def servernumber(self, ctx):
         """햔재 들어가있는 서버수를 보여줍니다"""
         embed = discord.Embed(color=colour)
