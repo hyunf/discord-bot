@@ -1,6 +1,7 @@
 import discord
 import datetime
 import json
+import dbl
 import urllib.request
 from discord.ext import commands
 from urllib.parse import quote
@@ -17,7 +18,8 @@ class 기타(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-
+        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTU0NjU3NzI2MzEzMjY3NCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkwMDI0Njg1fQ.rW5IA2Dikv5Xbo6tskmWTqHZiQauEngrdKhzP54Pp0A'  # set this to your DBL token
+        self.dblpy = dbl.DBLClient(self.client, self.token)
 
     @commands.command(name="한영번역", pass_context=True)
     async def translation(self, ctx, *, trsText):
@@ -175,6 +177,13 @@ class 기타(commands.Cog):
     async def invite(self, ctx):
         """봇초대 주소를 보여줍니다"""
         await ctx.send("https://discord.com/oauth2/authorize?client_id=695546577263132674&scope=bot&permissions=1945201982")
+
+    @commands.command(name="서버수")
+    async def servernumber(self, ctx):
+        """햔재 들어가있는 서버수를 보여줍니다"""
+        embed = discord.Embed(color=colour)
+        embed.add_field(name="들어가있는 서버수", value=self.dblpy.guild_count())
+        await ctx.send(embed=embed)
 
 
 
