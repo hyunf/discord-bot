@@ -5,6 +5,7 @@
   <img src="https://top.gg/api/widget/lib/695546577263132674.svg" alt="동준봇" />
 </a>
 <br/>
+
 # discord bot
 
 **봇 소스코드를 가져가서 쓰시되, 출처를 꼭 밝히고 쓰시길 바랍니다**
