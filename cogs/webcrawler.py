@@ -58,51 +58,63 @@ class 크롤링(commands.Cog):
         self.client = client
 
     @commands.command(name="날씨", pass_context=True)
-    async def weather(self, ctx, area):
+    async def weather(self, ctx, location):
         """날씨를 알려줍니다"""
         embed = discord.Embed(
             title="날씨",
             colour=colour
         )
-        targetSite = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + area + "날씨"
+        Finallocation = location + '날씨'
+        LocationInfo = ""
+        NowTemp = ""
+        CheckDust = []
+        url = 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=' + Finallocation
+        hdr = {'User-Agent': (
+            'mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/78.0.3904.70 safari/537.36')}
+        req = requests.get(url, headers=hdr)
+        html = req.text
+        soup = BeautifulSoup(html, 'html.parser')
 
-        header = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
-        melonrqRetry = rq.get(targetSite, headers=header)
-        melonht = melonrqRetry.text
-        melonsp = bs(melonht, 'html.parser')
-        area1 = melonsp.find('span', {'class': 'btn_select'})
-        area2 = area1.find('em')
-        artis = melonsp.find('p', {'class': 'info_temperature'})
-        artists = artis.find('span', {'class': 'todaytemp'})
-        information = melonsp.find('ul', {'class': 'info_list'})
-        titles = information.find('p', {'class': 'cast_txt'})
-        min1 = information.find('span', {'class': 'min'})
-        min2 = min1.find('span', {'class': 'num'})
-        max1 = information.find('span', {'class': 'max'})
-        max2 = max1.find('span', {'class': 'num'})
-        sensible1 = information.find('em')
-        sensible2 = sensible1.find('span', {'class': 'num'})
-        level21 = melonsp.find('dd', {'class': 'lv2'})
-        level22 = level21.find('span', {'class': 'num'})
-        level11 = melonsp.find('dd', {'class': 'lv1'})
-        level12 = level11.find('span', {'class': 'num'})
-        artist = artists.text.strip()
-        title = titles.text.strip()
-        min = min2.text.strip()
-        max = max2.text.strip()
-        sensible = sensible2.text.strip()
-        level2 = level22.text.strip()
-        level1 = level12.text.strip()
-        area3 = area2.text.strip()
-        embed.add_field(name="지역", value=f"{area3}")
-        embed.add_field(name="현재날씨", value=f"{artist}℃", inline=False)
-        embed.add_field(name="정보", value=title, inline=False)
-        embed.add_field(name="최저온도/최고온도", value=f"{min}℃/{max}℃", inline=False)
-        embed.add_field(name="채감온도", value=f"{sensible}℃", inline=False)
-        embed.add_field(name="미세먼지", value=f"{level2}", inline=False)
-        embed.add_field(name="초미세먼지", value=f"{level1}", inline=False)
-        embed.timestamp = datetime.datetime.utcnow()
-        await ctx.send(embed=embed)
+        # 오류 체크
+        ErrorCheck = soup.find('span', {'class': 'btn_select'})
+
+        if 'None' in str(ErrorCheck):
+            await ctx.send('검색 오류발생')
+        else:
+            # 지역 정보
+            for i in soup.select('span[class=btn_select]'):
+                LocationInfo = i.text
+
+            NowTemp = soup.find('span', {'class': 'todaytemp'}).text + soup.find('span', {'class': 'tempmark'}).text[2:]
+
+            WeatherCast = soup.find('p', {'class': 'cast_txt'}).text
+
+            TodayMorningTemp = soup.find('span', {'class': 'min'}).text
+            TodayAfternoonTemp = soup.find('span', {'class': 'max'}).text
+            TodayFeelTemp = soup.find('span', {'class': 'sensible'}).text[5:]
+
+            TodayUV = soup.find('span', {'class': 'indicator'}).text[4:-2] + " " + soup.find('span', {
+                'class': 'indicator'}).text[-2:]
+
+            CheckDust1 = soup.find('div', {'class': 'sub_info'})
+            CheckDust2 = CheckDust1.find('div', {'class': 'detail_box'})
+            for i in CheckDust2.select('dd'):
+                CheckDust.append(i.text)
+            FineDust = CheckDust[0][:-2] + " " + CheckDust[0][-2:]
+            UltraFineDust = CheckDust[1][:-2] + " " + CheckDust[1][-2:]
+            Ozon = CheckDust[2][:-2] + " " + CheckDust[2][-2:]
+
+            embed.add_field(name="지역", value=f"{LocationInfo}")
+            embed.add_field(name="현재온도", value=f"{NowTemp}", inline=False)
+            embed.add_field(name="체감온도", value=f"{TodayFeelTemp}", inline=False)
+            embed.add_field(name="정보", value=f"{WeatherCast}", inline=False)
+            embed.add_field(name="자외선", value=f"{TodayUV}", inline=False)
+            embed.add_field(name="최저온도/최고온도", value=f"{TodayMorningTemp}/{TodayAfternoonTemp}", inline=False)
+            embed.add_field(name="미세먼지", value=f"{FineDust}", inline=False)
+            embed.add_field(name="초미세먼지", value=f"{UltraFineDust}", inline=False)
+            embed.add_field(name="오존 지수", value=f"{Ozon}", inline=False)
+            embed.timestamp = datetime.datetime.utcnow()
+            await ctx.send(embed=embed)
 
 
     @commands.command(name="인벤", pass_context=True)
