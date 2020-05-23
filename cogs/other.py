@@ -3,6 +3,7 @@ import datetime
 import json
 import dbl
 import urllib.request
+import aiohttp
 from discord.ext import commands
 from urllib.parse import quote
 from urllib.request import urlopen, Request, HTTPError
@@ -20,6 +21,7 @@ class 기타(commands.Cog):
         self.client = client
         self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTU0NjU3NzI2MzEzMjY3NCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkwMDI0Njg1fQ.rW5IA2Dikv5Xbo6tskmWTqHZiQauEngrdKhzP54Pp0A'  # set this to your DBL token
         self.dblpy = dbl.DBLClient(self.client, self.token)
+        self.CBSList = "http://m.safekorea.go.kr/idsiSFK/neo/ext/json/disasterDataList/disasterDataList.json"
 
     @commands.command(name="한영번역", pass_context=True)
     async def translation(self, ctx, *, trsText):
@@ -183,6 +185,23 @@ class 기타(commands.Cog):
         """햔재 들어가있는 서버수를 보여줍니다"""
         embed = discord.Embed(color=colour)
         embed.add_field(name="들어가있는 서버수", value=f"{self.dblpy.guild_count()}개")
+        await ctx.send(embed=embed)
+
+    @commands.command(name="재난문자")
+    async def get_cbs(self, ctx):
+        """최근에 발생한 재난문자를 보여줍니다"""
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self.CBSList) as r:
+                data = await r.json()
+
+        embed = discord.Embed(
+            title="📢 재난문자",
+            description="최근 발송된 3개의 재난문자를 보여줘요.",
+            color=0xE71212
+        )
+
+        for i in data[:3]:
+            embed.add_field(name=i["SJ"], value=i["CONT"], inline=False)
         await ctx.send(embed=embed)
 
 
