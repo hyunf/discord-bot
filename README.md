@@ -1,3 +1,6 @@
+<a href="https://top.gg/bot/695546577263132674" >
+  <img src="https://top.gg/api/widget/status/695546577263132674.svg" alt="동준봇" />
+</a>
 # discord bot
 
 **봇 소스코드를 가져가서 쓰시되, 출처를 꼭 밝히고 쓰시길 바랍니다**
