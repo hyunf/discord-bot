@@ -53,6 +53,53 @@ class 크롤링(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.command(name="날씨", pass_context=True)
+    async def weather(self, ctx, area):
+        """날씨를 알려줍니다"""
+        embed = discord.Embed(
+            title="날씨",
+            colour=colour
+        )
+        targetSite = 'https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=' + area + "날씨"
+
+        header = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
+        melonrqRetry = rq.get(targetSite, headers=header)
+        melonht = melonrqRetry.text
+        melonsp = bs(melonht, 'html.parser')
+        area1 = melonsp.find('span', {'class': 'btn_select'})
+        area2 = area1.find('em')
+        artis = melonsp.find('p', {'class': 'info_temperature'})
+        artists = artis.find('span', {'class': 'todaytemp'})
+        information = melonsp.find('ul', {'class': 'info_list'})
+        titles = information.find('p', {'class': 'cast_txt'})
+        min1 = information.find('span', {'class': 'min'})
+        min2 = min1.find('span', {'class': 'num'})
+        max1 = information.find('span', {'class': 'max'})
+        max2 = max1.find('span', {'class': 'num'})
+        sensible1 = information.find('em')
+        sensible2 = sensible1.find('span', {'class': 'num'})
+        level21 = melonsp.find('dd', {'class': 'lv2'})
+        level22 = level21.find('span', {'class': 'num'})
+        level11 = melonsp.find('dd', {'class': 'lv1'})
+        level12 = level11.find('span', {'class': 'num'})
+        artist = artists.text.strip()
+        title = titles.text.strip()
+        min = min2.text.strip()
+        max = max2.text.strip()
+        sensible = sensible2.text.strip()
+        level2 = level22.text.strip()
+        level1 = level12.text.strip()
+        area3 = area2.text.strip()
+        embed.add_field(name="지역", value=f"{area3}")
+        embed.add_field(name="현재날씨", value=f"{artist}℃", inline=False)
+        embed.add_field(name="정보", value=title, inline=False)
+        embed.add_field(name="최저온도/최고온도", value=f"{min}℃/{max}℃", inline=False)
+        embed.add_field(name="채감온도", value=f"{sensible}℃", inline=False)
+        embed.add_field(name="미세먼지", value=f"{level2}", inline=False)
+        embed.add_field(name="초미세먼지", value=f"{level1}", inline=False)
+        embed.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed=embed)
+
 
     @commands.command(name="인벤", pass_context=True)
     async def inven(self, ctx):
