@@ -1,3 +1,4 @@
+<div style="text-align: center;">
 <a href="https://top.gg/bot/695546577263132674" >
   <img src="https://top.gg/api/widget/status/695546577263132674.svg" alt="동준봇" />
 </a>
@@ -6,6 +7,8 @@
 </a>
 <br/>
 ![issues](https://img.shields.io/github/issues/hands8142/bot)
+ 
+ </div>
 
 # discord bot
 
