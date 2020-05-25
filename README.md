@@ -6,7 +6,7 @@
   <img src="https://top.gg/api/widget/lib/695546577263132674.svg" alt="동준봇" />
 </a>
 
-https://img.shields.io/github/issues/hands8142/bot
+<img src="https://img.shields.io/github/issues/hands8142/bot" alt="이슈/>
  </div>
  <br/>
 
