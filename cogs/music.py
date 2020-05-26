@@ -382,9 +382,9 @@ class 음악(commands.Cog):
         ctx.music_state.volume = volume / 100
         await ctx.send(f'볼륨을 {volume}으로 설정했습니다.')
 
-    @commands.command(name="기록 삭제")
+    @commands.command(name="기록삭제")
     async def clear(self, ctx):
-        """재생 목록을 지 웁니다."""
+        """재생목록을 지웁니다."""
         ctx.music_state.playlist.clear()
         await ctx.send('재생 목록을 삭제합니다.')
 
