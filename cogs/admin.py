@@ -117,6 +117,29 @@ class 관리자(commands.Cog):
             embed.timestamp = datetime.datetime.utcnow()
             await ctx.send(embed=embed)
 
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def dm(self, ctx, *, args=None):
+        """모든사람에게 dm 공지를 합니다"""
+        if args != None:
+            members = ctx.guild.members
+            for member in members:
+                try:
+                    await member.send(args)
+                    print("'" + args + "' sent to: " + member.name)
+                    await ctx.send(f"{member.name}에게 dm을 보냇습니다")
+                except:
+                    print("Couldn't send '" + args + "' to " + member.name)
+        else:
+            await ctx.channel.sned("You didn't provide arguments.")
+
+    @dm.error
+    async def dm_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(title="{}님, 당신은 이 명령을 실행하실 권한이 없습니다.".format(ctx.message.author), colour=colour)
+            embed.timestamp = datetime.datetime.utcnow()
+            await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(관리자(client))
