@@ -127,7 +127,7 @@ class 관리자(commands.Cog):
                 try:
                     await member.send(args)
                     print("'" + args + "' sent to: " + member.name)
-                    await ctx.send(f"{member.name}에게 dm을 보냇습니다")
+                    await ctx.send(f"{member.name}에게 dm을 보넸습니다")
                 except:
                     print("Couldn't send '" + args + "' to " + member.name)
         else:
