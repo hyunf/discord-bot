@@ -3,7 +3,7 @@ from configparser import ConfigParser
 from discord.ext import commands
 
 config = ConfigParser()
-config.read('././config.ini')
+config.read('././config.ini', encoding="utf8")
 prefix = config["setting"]["prefix"]
 
 colour = discord.Colour.blue()

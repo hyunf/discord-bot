@@ -96,8 +96,13 @@ class 기타(commands.Cog):
     @commands.command(name="온라인")
     async def servernumber(self, ctx):
         """햔재 들어가있는 서버수를 보여줍니다"""
+        members_count = 0
+
+        for guild in self.client.guilds:
+            members_count += len(guild.members)
         embed = discord.Embed(color=colour)
-        embed.add_field(name="들어가있는 서버수", value=f"{self.dblpy.guild_count()}개")
+        embed.add_field(name="들어가있는 서버수", value=f"{self.dblpy.guild_count()}개", inline=False)
+        embed.add_field(name="사용중인 인원수", value=f"{members_count}명", inline=False)
         await ctx.send(embed=embed)
 
     @commands.command(name="재난문자")
