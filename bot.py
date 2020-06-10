@@ -7,9 +7,10 @@ from itertools import cycle
 
 
 config = ConfigParser()
-config.read('config.ini')
+config.read('config.ini', encoding="utf8")
 prefix = config["setting"]["prefix"]
 owners = config["setting"]["owners"]
+sangte = config["setting"]["sangte"]
 
 
 
@@ -68,6 +69,13 @@ async def on_ready():
     print('Discord.py 버전 : ' + discord.__version__)
     print("bot starting..")#봇 시작이라고 뜨게하기
     print("==========")
+    guilds_count = len(client.guilds)
+    members_count = 0
+
+    for guild in client.guilds:
+        members_count += len(guild.members)
+    print("서버 수: " + str(guilds_count))
+    print("멤버 수: " + str(members_count))
     change_status.start()
 
 @tasks.loop(seconds=10)
