@@ -15,7 +15,7 @@ sangte = config["setting"]["sangte"]
 
 
 colour = discord.Colour.blue()
-status = cycle([f'{prefix}도움', '문의는 한동준#7109'])
+status = cycle([f'{prefix}도움', sangte])
 
 
 client = commands.Bot(command_prefix=prefix)
