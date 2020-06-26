@@ -29,6 +29,7 @@ class 정보(commands.Cog):
         embed.add_field(name="가입일", value=str(date.year) + "년" + str(date.month) + "월" + str(date.day) + "일",
                         inline=False)
         embed.add_field(name="아이디", value=ctx.author.id, inline=False)
+        embed.add_field(name="역할", value=' '.join([r.mention for r in ctx.author.roles]))
         embed.set_thumbnail(url=ctx.author.avatar_url)
         embed.timestamp = datetime.datetime.utcnow()
         await ctx.send(embed=embed)

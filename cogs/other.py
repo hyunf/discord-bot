@@ -6,7 +6,8 @@ import urllib.request
 import aiohttp
 from discord.ext import commands
 from urllib.parse import quote
-from urllib.request import urlopen, Request, HTTPError
+import pokepy
+from email.mime.text import MIMEText
 
 #Naver Open API application ID
 client_id = "YeOVJk0bK59ryYiRDIiY"
@@ -121,6 +122,22 @@ class 기타(commands.Cog):
         for i in data[:3]:
             embed.add_field(name=i["SJ"], value=i["CONT"], inline=False)
         await ctx.send(embed=embed)
+
+    @commands.command(name="포켓검색")
+    async def sc(self, ctx, *, poke):
+        """포켓몬들의 스텟을 보여줍니다 이름은 영어로 넣어주세요"""
+        pokemon = pokepy.V2Client().get_pokemon(str(poke))
+        embed = discord.Embed(title=pokemon.name, colour=colour)
+        embed.set_image(url=f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemon.id}.png")
+        embed.add_field(name="채력", value=str(pokemon.stats[0].base_stat), inline=True)
+        embed.add_field(name="공격력", value=str(pokemon.stats[1].base_stat), inline=True)
+        embed.add_field(name="방어력", value=str(pokemon.stats[2].base_stat), inline=True)
+        embed.add_field(name="특수 공격", value=str(pokemon.stats[3].base_stat), inline=True)
+        embed.add_field(name="특수 방어", value=str(pokemon.stats[4].base_stat), inline=True)
+        embed.add_field(name="스피드", value=str(pokemon.stats[5].base_stat), inline=True)
+        embed.add_field(name="타입", value=", ".join(ty.type.name for ty in pokemon.types), inline=True)
+        await ctx.send(embed=embed)
+
 
 
 

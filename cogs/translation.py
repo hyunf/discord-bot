@@ -14,6 +14,8 @@ client_id = "YeOVJk0bK59ryYiRDIiY"
 client_secret = "ZBHDeMCaMe"
 colour = discord.Colour.blue()
 
+
+
 class 번역(commands.Cog):
     """번역 기능들을 보여줍니다"""
 
