@@ -13,3 +13,4 @@ youtube_dl
 colorlog
 asyncio
 dblpy
+pokepy
